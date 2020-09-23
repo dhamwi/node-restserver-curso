@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'dev') {
     urlDB = 'mongodb://localhost:27017/cafeDB';
 } else {
     // Conexión remota
-    urlDB = 'mongodb+srv://gohado:SICbHeV2RKhwInpI@cluster0.yiq7o.mongodb.net/cafeDB';
+    urlDB = process.env.MONGO_URL;
 }
 
 process.env.URLDB = urlDB;
