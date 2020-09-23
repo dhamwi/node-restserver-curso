@@ -1,47 +1,23 @@
 require('./config/config');
 
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+const app = express();
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(require('./control/usuario'));
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
-
-app.get('/usuario', function(req, res) {
-    res.json('Get usuario');
-});
-
-app.post('/usuario', function(req, res) {
-
-    let body = req.body;
-    if (body.nombre === undefined) {
-        // Mensajes de respuesta de HTTP
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es obligatorio'
-        });;
-    } else {
-        res.json({
-            persona: body
-        })
-    }
-});
-
-// Para recibir un parámetro se pone :etc
-app.put('/usuario/:id', function(req, res) {
-    let id = req.params.id;
-    res.json({
-        id
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true },
+    (error, respons) => {
+        if (error) throw error;
+        console.log('Base de datos CONECTADA');
     });
-});
-
-app.delete('/usuario', function(req, res) {
-    res.json('Delete usuario');
-});
 
 app.listen(process.env.PORT, () => {
     console.log('Escuchando puerto: ', process.env.PORT);
