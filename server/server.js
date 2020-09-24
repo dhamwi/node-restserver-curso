@@ -8,7 +8,9 @@ const app = express();
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(require('./control/usuario'));
+
+// Configuración general de rutas
+app.use(require('./control/index'));
 
 // parse application/json
 app.use(bodyParser.json());

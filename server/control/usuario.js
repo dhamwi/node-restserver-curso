@@ -4,9 +4,11 @@ const _ = require('underscore');
 const Usuario = require('../model/usuario');
 const usuario = require('../model/usuario');
 
+const { verificarToken, verificarAdminRole } = require('../middlewares/autenticacion');
+
 const app = express();
 
-app.get('/usuario', function(req, res) {
+app.get('/usuario', verificarToken, (req, res) => {
 
     let desde = req.query.desde || 0; // Para seleccionar la página que queremos
     desde = Number(desde); // Para transformar el String en un número
@@ -39,7 +41,7 @@ app.get('/usuario', function(req, res) {
         });
 });
 
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verificarToken, verificarAdminRole], function(req, res) {
 
     let body = req.body;
 
@@ -69,7 +71,7 @@ app.post('/usuario', function(req, res) {
 
 // Para recibir un parámetro se pone :etc
 // Para actualizar un registro
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verificarToken, verificarAdminRole], function(req, res) {
     let id = req.params.id;
     // En el método pick ponemos las propiedades que queremos que sean válidas
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
@@ -90,7 +92,7 @@ app.put('/usuario/:id', function(req, res) {
 });
 
 // Borrado lógico
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificarToken, verificarAdminRole], function(req, res) {
     let id = req.params.id;
 
     let nuevoEstado = {
