@@ -2,7 +2,6 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const Usuario = require('../model/usuario');
-const usuario = require('../model/usuario');
 
 const { verificarToken, verificarAdminRole } = require('../middlewares/autenticacion');
 
